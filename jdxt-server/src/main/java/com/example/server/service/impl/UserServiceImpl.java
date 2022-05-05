@@ -10,16 +10,18 @@ import com.example.server.pojo.Role;
 import com.example.server.pojo.User;
 import com.example.server.mapper.UserMapper;
 import com.example.server.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -54,14 +56,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Value ("${jwt.tokenHead}")
     private String tokenHead; // token 头部信息
     @Override
-    public RespBean login(String username, String password, HttpServletRequest request)
+    public RespBean login(String username, String password,String code, HttpServletRequest request)
     {
-//// 校验验证码
-//        String captcha = (String) request.getSession().getAttribute("captcah");
-//        if (StringUtils.isEmpty(code) || !captcha.equalsIgnoreCase(code)) {
-//            return RespBean.error("验证码输入错误，请重新输入！");
-//        }
+// 校验验证码
+        String captcha = (String) request.getSession().getAttribute("captcah");
+        if (StringUtils.isEmpty(code) || !captcha.equalsIgnoreCase(code)) {
+            return RespBean.error("验证码输入错误，请重新输入！");
+        }
         // 登录
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(username); // 调用权限框架方法获取用户名
         // 参数：第一个用户传过来的密码，第二个从 userDetails 中获取的
 
@@ -98,4 +101,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.selectOne(new QueryWrapper<User>().eq("name",name));
     }
 
+    @Override
+    public RespBean updateUserPassword(String oldPass, String pass, String userId) {
+       User user = baseMapper.selectById(userId);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        // 比对密码，判断旧密码是否正确
+        if (encoder.matches(oldPass, user.getPassword())) {
+            // 设置密码，并加密
+            user.setPsw(encoder.encode(pass));
+            int result = baseMapper.updateById(user);
+            if (1 == result) {
+                return RespBean.success("更新成功！");
+            }
+        }
+        return RespBean.error("更新失败！");
+    }
+    @Override
+    public  RespBean updateUserAvatar(String url, String id, Authentication authentication){
+    User user=userMapper.selectById(id);
+    user.setAvatar(url);
+    int i=userMapper.updateById(user);
+    if(i==1){
+        User principal=(User)authentication.getPrincipal();
+        principal.setAvatar(url);
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user,authentication.getCredentials(),authentication.getAuthorities()));
+        return RespBean.success("更新成功",url);
+    }
+        return RespBean.error("更新失败");
+    }
 }

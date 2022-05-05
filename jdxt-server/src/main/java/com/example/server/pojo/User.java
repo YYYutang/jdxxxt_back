@@ -41,7 +41,14 @@ public class User implements Serializable, UserDetails {
     @ApiModelProperty(value = "是否启用")
     @Getter(AccessLevel.NONE) // 不需要生成 get 方法，防止与 UserDetails 重写的 isEnabled 冲突
     private Boolean enabled;
-
+    @ApiModelProperty(value="邮箱")
+    private String email;
+    @ApiModelProperty(value="年级")
+    private String grade;
+    @ApiModelProperty(value="班级")
+    private String classes;
+    @ApiModelProperty(value="头像")
+    private String avatar;
     @ApiModelProperty(value = "角色")
     @TableField(exist = false)
     private List<Role> roles;

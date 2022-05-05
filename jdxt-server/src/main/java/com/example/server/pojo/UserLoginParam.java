@@ -15,5 +15,7 @@ import lombok.experimental.Accessors;
         private String psw;
         @ApiModelProperty(value="id",required = true)
         private String id;
+        @ApiModelProperty(value="验证码",required = true)
+        private String code;
     }
 

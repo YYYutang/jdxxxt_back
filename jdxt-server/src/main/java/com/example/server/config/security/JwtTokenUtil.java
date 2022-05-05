@@ -18,8 +18,7 @@ public class JwtTokenUtil {
     private static final String CLAIM_KEY_CREATED="created";
     @Value("${jwt.secret}")
     private String secret;
-    @Value("${jwt.expiration}")
-    private Long expiration;
+    private  long expiration=7*24*3600*1000;
     public String generateToken(UserDetails userDetails){
         Map<String,Object>claims=new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME,userDetails.getUsername());
@@ -86,6 +85,7 @@ public class JwtTokenUtil {
     }
 
     private Date generateExpirationDate() {
+        System.out.print(expiration);
         return new Date(System.currentTimeMillis()+expiration+1000);
     }
 }

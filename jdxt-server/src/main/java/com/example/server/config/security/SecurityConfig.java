@@ -31,7 +31,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         private  RestfulAccessDeniedHandler restfulAccessDeniedHandler;
 
 
-    @Override
+        @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception{
             auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
         }
@@ -39,6 +39,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         public void configure(WebSecurity web)throws Exception{
             web.ignoring().antMatchers(
                     "/websocket/**",
+                    "/login",
                     "/**.html",
                     "/login/**",
                     "//hello/**",
@@ -54,7 +55,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                     "/swagger-resources/**",        // 放行 swagger 资源
                     "/v2/api-docs/**",              // 放行 swagger 资源
                     "/captcha",      // 验证码接口
-                    "/ws/**"
+                    "/ws/**",
+                    "/video/**"
             );
         }
         @Override

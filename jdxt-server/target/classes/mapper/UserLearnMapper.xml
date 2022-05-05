@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.server.mapper.UserLearnMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.server.pojo.UserLearn">
+        <id column="uid" property="uid" />
+        <result column="l_chapter" property="l_chapter" />
+        <result column="l_section" property="l_section" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        uid, l_chapter,l_section
+    </sql>
+    <select id="finduserlearn" resultType="UserLearn">
+        select uid,l_chapter,l_section from user_learn where uid=#{uid}
+    </select>
+    <insert id="insertuserlearn" parameterType="UserLearn">
+        insert
+        into user_learn (uid,l_chapter,l_section)
+        select #{uid},#{l_chapter},#{l_section}
+        from dual
+        where not exists
+        (
+        select uid,l_chapter,l_section
+        from user_learn
+        where uid=#{uid}and l_chapter=#{l_chapter}and l_section=#{l_section}
+            )
+    </insert>
+    <select id="finduserlearncount" resultType="Int">
+        select count(*) from user_learn where uid=#{uid}
+    </select>
+</mapper>

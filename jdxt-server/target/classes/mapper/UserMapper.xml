@@ -7,11 +7,16 @@
         <id column="id" property="id" />
         <result column="psw" property="psw" />
         <result column="name" property="name" />
+        <result column="email" property="email" />
+        <result column="enabled" property="enabled" />
+        <result column="classes" property="classes" />
+        <result column="grade" property="grade" />
+        <result column="avatar" property="avatar" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, psw, name
+        id, psw, name,email,enabled,class,grade,avatar
     </sql>
 
 </mapper>
