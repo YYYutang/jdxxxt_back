@@ -87,12 +87,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("tokenHead",tokenHead);
         tokenMap.put("token",token);
+        System.out.println("生成token");
         return RespBean.success("登录成功", tokenMap);
     }
 
     @Override
     public List<Role> getRoles(String adminId) {
-        return roleMapper.getRoles(adminId);
+        System.out.println("in service");
+    return roleMapper.getRoles(adminId);
     }
 
     @Override

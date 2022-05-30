@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.server.mapper.JudgeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.server.pojo.Judge">
+        <result column="question" property="question" />
+        <result column="chapter" property="chapter" />
+        <result column="section" property="section" />
+        <result column="r_answer" property="r_answer"/>
+        <result column="judge_id" property="judge_id"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        question,chapter,section,r_answer,judge_id
+    </sql>
+    <select id="findjudge" resultType="Judge">
+        select * from test_judge where section=#{section} and chapter=#{chapter}
+    </select>
+    <insert id="insertjudge" parameterType="Judge">
+        insert
+        into test_judge (chapter,section,judge_id,r_answer,question)
+        values
+        <foreach collection="list" item="Judge" index="index" separator=",">
+               (#{Judge.chapter},#{Judge.section},#{Judge.judge_id},#{Judge.r_answer},#{Judge.question})
+        </foreach>
+    </insert>
+</mapper>

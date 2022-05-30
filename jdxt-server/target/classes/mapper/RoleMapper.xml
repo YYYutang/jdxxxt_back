@@ -23,6 +23,9 @@
                 LEFT JOIN
             user_role ar ON r.id=ar.rid
         WHERE
-            ar.`id`=#{userid}
+            ar.`id`=(
+                SELECT id
+                    FROM user
+                        WHERE name=#{userid})
     </select>
 </mapper>

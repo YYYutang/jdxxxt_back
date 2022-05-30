@@ -39,9 +39,8 @@ public class JwtAuthencationTokenFilter extends OncePerRequestFilter {
             // token 存在用户名，但未登录( 在 springSecurity 上下文拿不到 用户对象 ）
             if (null != username && null == SecurityContextHolder.getContext().getAuthentication()) {
                 // 登录(通过 username 拿到 UserDetails ）
-                System.out.println(username);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 // 判断 token 是否有效，重新设置用户对象
                 if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                     // 参数：用户对象 密码 角色

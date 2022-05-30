@@ -34,13 +34,16 @@ public class UserLearnController {
         System.out.println("输出参数"+count);
         return count;
     }
-    @ApiOperation(value="增加用户学习记录")
+    @ApiOperation(value="增加用户学习记录",produces ="application/json;charset=UTF-8")
     @PostMapping("/adduserlearn")
-    public int insertuserlearn(String uid,String l_chapter,String l_section){
-        UserLearn userLearn= new UserLearn();
-        userLearn.setUid(uid);
-        userLearn.setL_chapter(l_chapter);
-        userLearn.setL_section(l_section);
-        return userLearnService.insertuserlearn(userLearn);
+    public int insertuserlearn(@RequestBody UserLearn userLearn){
+        String uid=userLearn.getUid();
+        String l_chapter=userLearn.getL_chapter();
+        String l_section=userLearn.getL_section();
+        UserLearn userLearn1= new UserLearn();
+        userLearn1.setUid(uid);
+        userLearn1.setL_chapter(l_chapter);
+        userLearn1.setL_section(l_section);
+        return userLearnService.insertuserlearn(userLearn1);
     }
 }

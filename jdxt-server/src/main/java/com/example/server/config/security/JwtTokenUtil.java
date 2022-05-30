@@ -23,7 +23,7 @@ public class JwtTokenUtil {
         Map<String,Object>claims=new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME,userDetails.getUsername());
         claims.put(CLAIM_KEY_CREATED,new Date());
-        return generateToken(claims);
+         return generateToken(claims);
     }
     //从token中获取登陆用户名
     public String getUserNameFromToken (String token){

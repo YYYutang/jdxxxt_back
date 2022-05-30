@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.server.mapper.SelectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.server.pojo.Select">
+        <result column="answer_A" property="answer_A" />
+        <result column="answer_B" property="answer_B" />
+        <result column="answer_C" property="answer_C" />
+        <result column="answer_D" property="answer_D" />
+        <result column="question" property="question" />
+        <result column="chapter" property="chapter" />
+        <result column="section" property="section" />
+        <result column="r_answer" property="r_answer"/>
+        <result column="select_id" property="select_id"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        answer_A,answer_B,answer_C,answer_D,question,chapter,section,r_answer,select_id
+    </sql>
+    <select id="findselect" resultType="Select">
+        select * from test_select where section=#{section} and chapter=#{chapter}
+    </select>
+    <insert id="insertselect" parameterType="Select">
+        insert
+        into test_select (answer_A,answer_B,answer_C,answer_D,chapter,section,select_id,r_answer,question)
+        values
+               <foreach collection="list" item="Select" index="index" separator=",">
+               (#{Select.answer_A},#{Select.answer_B},#{Select.answer_C},#{Select.answer_D},#{Select.chapter},#{Select.section},#{Select.select_id},#{Select.r_answer},#{Select.question})
+               </foreach>
+    </insert>
+</mapper>

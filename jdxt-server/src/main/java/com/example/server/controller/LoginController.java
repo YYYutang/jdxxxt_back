@@ -44,6 +44,7 @@ public class LoginController {
         if(null==principal){
             return null;
         }
+        System.out.println("进入user/info");
         String name=principal.getName();
         User user=userService.getAdminByUserName(name);
         user.setPsw(null);
